@@ -1,0 +1,62 @@
+/* Фонові зображення для різних розмірів екрану */
+.services-bg, .tariffs-bg, .coverage-bg, .reviews-bg {
+    background-size: cover;
+    background-position: center;
+}
+
+/* Мобільні пристрої */
+@media (max-width: 640px) {
+    .services-bg {
+        background-image: url('../images/backgrounds/mobile/services-bg.png');
+    }
+
+    .tariffs-bg {
+        background-image: url('../images/backgrounds/mobile/tariffs-bg.png');
+    }
+
+    .coverage-bg {
+        background-image: url('../images/backgrounds/mobile/reviews-bg.png');
+    }
+
+    .reviews-bg {
+        background-image: url('../images/backgrounds/mobile/coverage-bg.png');
+    }
+}
+
+/* Планшети */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .services-bg {
+        background-image: url('../images/backgrounds/tablet/services-bg.png');
+    }
+
+    .tariffs-bg {
+        background-image: url('../images/backgrounds/tablet/tariffs-bg.png');
+    }
+
+    .coverage-bg {
+        background-image: url('../images/backgrounds/tablet/reviews-bg.png');
+    }
+
+    .reviews-bg {
+        background-image: url('../images/backgrounds/tablet/coverage-bg.png');
+    }
+}
+
+/* Десктопи */
+@media (min-width: 1025px) {
+    .services-bg {
+        background-image: url('../images/backgrounds/services-bg.png');
+    }
+
+    .tariffs-bg {
+        background-image: url('../images/backgrounds/tariffs-bg.png');
+    }
+
+    .coverage-bg {
+        background-image: url('../images/backgrounds/reviews-bg.png');
+    }
+
+    .reviews-bg {
+        background-image: url('../images/backgrounds/coverage-bg.png');
+    }
+}

@@ -1,61 +1,73 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Інтернет Провайдер - Landing Page
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Про проект
 
-## About Laravel
+Цей проект представляє собою лендінг-сторінку для інтернет-провайдера, розроблену з використанням Laravel та Livewire. Сайт має адаптивний дизайн, адмін-панель та повністю україномовний інтерфейс.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Особливості
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Адаптивний дизайн** - оптимізований для мобільних, планшетних та десктопних пристроїв
+- **Livewire компоненти** - динамічна взаємодія без використання Alpine.js
+- **Адмін-панель** - для керування контентом сайту
+- **Україномовний інтерфейс** - весь контент та база даних на українській мові
+- **Форма підключення** - з відправкою даних на email та збереженням у базі даних
+- **Система відгуків** - з відображенням 5 випадкових відгуків на сторінці
+- **Розділи послуг та тарифів** - з можливістю налаштування через адмін-панель
+- **Карта покриття** - для відображення зон обслуговування
+- **Кібер-панк стиль** - з глибоким синім фоном (#1E2A44), білими/світло-сірими ефектами (#FFFFFF, #D3D3D3), темно-сірими елементами (#2F2F2F) та фіолетовими/рожевими акцентами (#800080, #FF00FF)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Структура сайту
 
-## Learning Laravel
+- **Головна** - з слайдером та загальною інформацією
+- **Послуги** - опис послуг провайдера
+- **Тарифи** - доступні тарифні плани
+- **Кнопка "Підключитись"** - з модальною формою запиту на підключення
+- **Форма відгуків** - для додавання нових відгуків
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Технології
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Laravel** - PHP фреймворк для бекенду
+- **Livewire** - для інтерактивних компонентів без використання JavaScript фреймворків
+- **MySQL** - для зберігання даних
+- **Font Awesome** - локально збережені іконки
+- **Адаптивні зображення** - оптимізація розміру зображень залежно від розміру екрану
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Встановлення
 
-## Laravel Sponsors
+1. Клонуйте репозиторій
+   ```
+   git clone https://github.com/your-username/internet.provider.git
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+2. Встановіть залежності
+   ```
+   composer install
+   npm install
+   ```
 
-### Premium Partners
+3. Налаштуйте файл .env
+   ```
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+4. Налаштуйте підключення до бази даних у файлі .env
 
-## Contributing
+5. Виконайте міграції та заповніть базу даних
+   ```
+   php artisan migrate --seed
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+6. Запустіть сервер
+   ```
+   php artisan serve
+   ```
 
-## Code of Conduct
+7. Скомпілюйте ресурси
+   ```
+   npm run dev
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Ліцензія
 
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Цей проект ліцензовано під [MIT ліцензією](https://opensource.org/licenses/MIT).

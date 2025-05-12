@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Mail\ConnectionRequestMail;
 use App\Models\ConnectionRequest;
 use App\Models\Tariff;
+use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -29,8 +30,13 @@ class ConnectionRequestForm extends Component
         'email' => 'required|email',
         'phone' => 'required',
         'address' => 'required',
-        'tariff_id' => 'nullable|exists:tariffs,id',
+        'tariff_id' => 'required|exists:tariffs,id',
         'message' => 'nullable|string',
+    ];
+
+    protected $messages = [
+        'tariff_id.required' => 'Будь ласка, оберіть тарифний план',
+        'tariff_id.exists' => 'Обраний тарифний план не існує',
     ];
 
     #[On('openModal')]
@@ -38,7 +44,6 @@ class ConnectionRequestForm extends Component
     {
         $this->reset(['name', 'email', 'phone', 'address', 'message', 'success']);
 
-        // Якщо tariffId передано як масив з параметрами
         if (is_array($tariffId) && isset($tariffId['tariffId'])) {
             $this->tariff_id = $tariffId['tariffId'];
         } else {
@@ -57,7 +62,6 @@ class ConnectionRequestForm extends Component
     {
         $this->validate();
 
-        // Створення запису в базі даних
         $connectionRequest = ConnectionRequest::create([
             'name' => $this->name,
             'email' => $this->email,
@@ -68,15 +72,12 @@ class ConnectionRequestForm extends Component
             'status' => 'new',
         ]);
 
-        // Завантаження зв'язаного тарифу для використання в листі
         $connectionRequest->load('tariff');
 
         try {
-            // Відправка листа (наразі в логи)
             Mail::to(config('mail.from.address'))
                 ->send(new ConnectionRequestMail($connectionRequest));
 
-            // Логування даних заявки
             Log::info('Нова заявка на підключення', [
                 'id' => $connectionRequest->id,
                 'name' => $connectionRequest->name,
@@ -86,12 +87,17 @@ class ConnectionRequestForm extends Component
                 'tariff' => $connectionRequest->tariff ? $connectionRequest->tariff->name : null,
                 'message' => $connectionRequest->message,
             ]);
-        } catch (\Exception $e) {
-            // Логування помилки, але не показуємо її користувачу
+        } catch (Exception $e) {
             Log::error('Помилка відправки листа: ' . $e->getMessage());
         }
-
+        $this->reset();
         $this->success = true;
+    }
+
+    public function updated(): void
+    {
+        Log::info('Form updated');
+        $this->resetValidation();
     }
 
     public function render(): View|Application|Factory

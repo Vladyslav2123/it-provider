@@ -1,11 +1,11 @@
-<div>
-    <!-- Modal Backdrop -->
-    <div
-        class="fixed inset-0 z-50 flex items-center justify-center bg-transparent {{ $showModal ? '' : 'hidden' }}"
-        wire:keydown.escape="closeModal()"
-        aria-modal="true"
-        role="dialog"
-    >
+<div
+    class="fixed inset-0 z-[100] {{ $showModal ? '' : 'hidden' }}"
+    wire:keydown.escape="closeModal()"
+    aria-modal="true"
+    role="dialog"
+>
+    <!-- Modal Container -->
+    <div class="fixed inset-0 z-[101] flex items-center justify-center overflow-y-auto overflow-x-hidden">
         <!-- Modal Content -->
         <div
             wire:click.outside="closeModal()"
@@ -54,55 +54,60 @@
                 @else
                     <form wire:submit.prevent="submit" class="space-y-4">
                         <div>
-                            <label for="name" class="block text-sm font-medium cyber-text">ПІБ</label>
+                            <label for="modal-name" class="block text-sm font-medium cyber-text">ПІБ</label>
                             <input
                                 type="text"
-                                id="name"
-                                wire:model="name"
-                                class="cyber-input mt-1 block w-full rounded-md shadow-sm focus:ring-gray-500 sm:text-sm"
+                                id="modal-name"
+                                wire:model.blur="name"
+                                class="cyber-input px-2 mt-1 block w-full rounded-md shadow-sm focus:ring-gray-500 sm:text-sm"
                             >
-                            @error('name') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
+                            @error('name') <span class="mt-1 text-sm text-red-400">{{ $message }}</span> @enderror
+
                         </div>
 
                         <div>
-                            <label for="email" class="block text-sm font-medium cyber-text">Email адреса</label>
+                            <label for="modal-email" class="block text-sm font-medium cyber-text">Email адреса</label>
                             <input
                                 type="email"
-                                id="email"
-                                wire:model="email"
-                                class="cyber-input mt-1 block w-full rounded-md shadow-sm focus:ring-gray-500 sm:text-sm"
+                                id="modal-email"
+                                wire:model.blur="email"
+                                class="cyber-input px-2 mt-1 block w-full rounded-md shadow-sm focus:ring-gray-500 sm:text-sm"
                             >
-                            @error('email') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
+                            @error('email') <span class="mt-1 text-sm text-red-400">{{ $message }}</span> @enderror
+
                         </div>
 
                         <div>
-                            <label for="phone" class="block text-sm font-medium cyber-text">Номер телефону</label>
+                            <label for="modal-phone" class="block text-sm font-medium cyber-text">Номер телефону</label>
                             <input
                                 type="tel"
-                                id="phone"
-                                wire:model="phone"
-                                class="cyber-input mt-1 block w-full rounded-md shadow-sm focus:ring-gray-500 sm:text-sm"
+                                id="modal-phone"
+                                wire:model.blur="phone"
+                                class="cyber-input px-2 mt-1 block w-full rounded-md shadow-sm focus:ring-gray-500 sm:text-sm"
                             >
-                            @error('phone') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
+                            @error('phone') <span class="mt-1 text-sm text-red-400">{{ $message }}</span> @enderror
+
                         </div>
 
                         <div>
-                            <label for="address" class="block text-sm font-medium cyber-text">Адреса підключення</label>
+                            <label for="modal-address" class="block text-sm font-medium cyber-text">Адреса
+                                підключення</label>
                             <input
                                 type="text"
-                                id="address"
-                                wire:model="address"
-                                class="cyber-input mt-1 block w-full rounded-md shadow-sm focus:ring-gray-500 sm:text-sm"
+                                id="modal-address"
+                                wire:model.blur="address"
+                                class="cyber-input mt-1 px-2 block w-full rounded-md shadow-sm focus:ring-gray-500 sm:text-sm"
                             >
-                            @error('address') <p class="mt-1 text-sm text-red-400">{{ $message }}</p> @enderror
+                            @error('address') <span class="mt-1 text-sm text-red-400">{{ $message }}</span> @enderror
+
                         </div>
 
                         <div>
-                            <label for="tariff_id" class="block text-sm font-medium cyber-text">Оберіть тарифний
+                            <label for="modal-tariff_id" class="block text-sm font-medium cyber-text">Оберіть тарифний
                                 план</label>
                             <select
-                                id="tariff_id"
-                                wire:model="tariff_id"
+                                id="modal-tariff_id"
+                                wire:model.blur="tariff_id"
                                 class="cyber-input mt-1 block w-full rounded-md shadow-sm focus:ring-gray-500 sm:text-sm"
                             >
                                 <option value="">-- Оберіть план --</option>
@@ -115,14 +120,15 @@
                         </div>
 
                         <div>
-                            <label for="message" class="block text-sm font-medium cyber-text">Додаткова інформація
+                            <label for="modal-message" class="block text-sm font-medium cyber-text">Додаткова інформація
                                 (необов'язково)</label>
                             <textarea
-                                id="message"
-                                wire:model="message"
+                                id="modal-message"
+                                wire:model.blur="message"
                                 rows="3"
-                                class="cyber-input mt-1 block w-full rounded-md shadow-sm focus:ring-gray-500 sm:text-sm"
+                                class="cyber-input px-2 mt-1 block w-full rounded-md shadow-sm focus:ring-gray-500 sm:text-sm"
                             ></textarea>
+                            @error('message') <span class="mt-1 text-sm text-red-400">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="flex justify-end space-x-3 pt-4">

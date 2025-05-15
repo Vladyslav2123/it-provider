@@ -90,7 +90,7 @@ class ConnectionRequestForm extends Component
         } catch (Exception $e) {
             Log::error('Помилка відправки листа: ' . $e->getMessage());
         }
-        $this->reset();
+        $this->reset(['name', 'email', 'phone', 'address', 'message']);
         $this->success = true;
     }
 

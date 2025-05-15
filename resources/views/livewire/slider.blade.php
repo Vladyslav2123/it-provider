@@ -5,12 +5,31 @@
             class="absolute inset-0 w-full h-full transition-opacity duration-500 ease-in-out"
         >
             <picture>
-                <!-- Мобільні пристрої -->
-                <source media="(max-width: 640px)" srcset="{{ asset('images/backgrounds/mobile/' . basename($items[$activeSlide]->image)) }}">
-                <!-- Планшети -->
-                <source media="(max-width: 1024px)" srcset="{{ asset('images/backgrounds/tablet/' . basename($items[$activeSlide]->image)) }}">
+                <!-- WebP для мобільних пристроїв -->
+                <source media="(max-width: 640px)"
+                        srcset="{{ asset('storage/images/backgrounds/mobile/' . pathinfo(basename($items[$activeSlide]->image), PATHINFO_FILENAME) . '.webp') }}"
+                        type="image/webp">
+                <!-- WebP для планшетів -->
+                <source media="(max-width: 1024px)"
+                        srcset="{{ asset('storage/images/backgrounds/tablet/' . pathinfo(basename($items[$activeSlide]->image), PATHINFO_FILENAME) . '.webp') }}"
+                        type="image/webp">
+                <!-- WebP для десктопів -->
+                <source
+                    srcset="{{ asset('storage/images/backgrounds/' . pathinfo(basename($items[$activeSlide]->image), PATHINFO_FILENAME) . '.webp') }}"
+                    type="image/webp">
+
+                <!-- Звичайні формати для браузерів, які не підтримують WebP -->
+                <source media="(max-width: 640px)"
+                        srcset="{{ asset('storage/images/backgrounds/mobile/' . basename($items[$activeSlide]->image)) }}">
+                <source media="(max-width: 1024px)"
+                        srcset="{{ asset('storage/images/backgrounds/tablet/' . basename($items[$activeSlide]->image)) }}">
+
                 <!-- Десктопи -->
-                <img src="{{ asset($items[$activeSlide]->image) }}" alt="{{ $items[$activeSlide]->title }}" class="w-full h-full object-cover">
+                <img
+                    src="{{ asset($items[$activeSlide]->image) }}"
+                    alt="{{ $items[$activeSlide]->title }}"
+                    class="w-full h-full object-cover"
+                    fetchpriority="high">
             </picture>
 
             <div class="absolute inset-0 flex items-center justify-center">
@@ -39,32 +58,41 @@
         </div>
 
         <!-- Navigation Arrows -->
-        <div
+        <button
             wire:click="prevSlide"
             class="absolute left-4 md:left-6 lg:left-8 top-1/2 transform -translate-y-1/2 cyber-button p-2 sm:p-3 rounded-full focus:outline-none cursor-pointer z-20 transition duration-150 ease-in-out slider-nav-arrow"
+            aria-label="Попередній слайд"
+            type="button"
         >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24"
-                 stroke="currentColor">
+                 stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
             </svg>
-        </div>
-        <div
+        </button>
+        <button
             wire:click="nextSlide"
             class="absolute right-4 md:right-6 lg:right-8 top-1/2 transform -translate-y-1/2 cyber-button p-2 sm:p-3 rounded-full focus:outline-none cursor-pointer z-20 transition duration-150 ease-in-out slider-nav-arrow"
+            aria-label="Наступний слайд"
+            type="button"
         >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24"
-                 stroke="currentColor">
+                 stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
-        </div>
+        </button>
 
         <!-- Dots Navigation -->
-        <div class="absolute bottom-8 left-0 right-0 flex justify-center space-x-3 z-10">
+        <div class="absolute bottom-8 left-0 right-0 flex justify-center space-x-3 z-10" role="tablist"
+             aria-label="Навігація по слайдах">
             @foreach($items as $index => $item)
-                <div
+                <button
                     wire:click="goToSlide({{ $index }})"
                     class="h-4 w-4 rounded-full {{ $index === $activeSlide ? 'bg-gray-500' : 'bg-white' }} hover:bg-gray-400 focus:outline-none cursor-pointer transition duration-150 ease-in-out"
-                ></div>
+                    role="tab"
+                    aria-label="Слайд {{ $index + 1 }}: {{ $item->title }}"
+                    aria-selected="{{ $index === $activeSlide ? 'true' : 'false' }}"
+                    type="button"
+                ></button>
             @endforeach
         </div>
     @else

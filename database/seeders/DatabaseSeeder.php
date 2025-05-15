@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\CoverageArea;
+
 use App\Models\Review;
 use App\Models\Service;
 use App\Models\SliderItem;
@@ -26,11 +26,14 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
+        // Створення налаштувань футера
+        $this->call(FooterSettingsSeeder::class);
+
         // Створення слайдерів
         SliderItem::create([
             'title' => 'Надшвидкісний оптоволоконний інтернет',
             'description' => 'Відчуйте швидкість до 2 Гбіт/с з нашою оптоволоконною мережею нового покоління. Ідеально підходить для стрімінгу, ігор та роботи з дому.',
-            'image' => '/images/backgrounds/coverage-bg.jpg',
+            'image' => '/storage/images/backgrounds/coverage-bg.webp',
             'button_text' => 'Переглянути тарифи',
             'button_url' => '#tariffs',
             'order' => 1,
@@ -40,7 +43,7 @@ class DatabaseSeeder extends Seeder
         SliderItem::create([
             'title' => 'Рішення для бізнесу',
             'description' => 'Індивідуальні пакети підключення для бізнесу з цілодобовою підтримкою та гарантією доступності 99,9%.',
-            'image' => '/images/backgrounds/coverage-bg.jpg',
+            'image' => '/storage/images/backgrounds/coverage-bg.webp',
             'button_text' => 'Бізнес-тарифи',
             'button_url' => '#services',
             'order' => 2,
@@ -50,7 +53,7 @@ class DatabaseSeeder extends Seeder
         SliderItem::create([
             'title' => 'Обмежена пропозиція',
             'description' => 'Підключіться сьогодні та отримайте безкоштовне встановлення плюс перший місяць безкоштовно на будь-якому тарифі.',
-            'image' => '/images/backgrounds/coverage-bg.jpg',
+            'image' => '/storage/images/backgrounds/coverage-bg.webp',
             'button_text' => 'Отримати пропозицію',
             'button_url' => '#tariffs',
             'order' => 3,
@@ -61,8 +64,8 @@ class DatabaseSeeder extends Seeder
         Service::create([
             'title' => 'Оптоволоконний інтернет',
             'description' => 'Відчуйте блискавично швидке з\'єднання з нашою найсучаснішою оптоволоконною мережею. Насолоджуйтесь швидкістю до 2 Гбіт/с з наднизькою затримкою, ідеально для стрімінгу 4K, кіберспорту та відеоконференцій без перебоїв.',
-            'icon' => '/images/icons/fiber.svg',
-            'image' => '/images/backgrounds/hero-bg.png',
+            'icon' => '/storage/images/icons/fiber.svg',
+            'image' => '/storage/images/backgrounds/hero-bg.webp',
             'order' => 1,
             'active' => true,
         ]);
@@ -70,8 +73,8 @@ class DatabaseSeeder extends Seeder
         Service::create([
             'title' => 'Рішення для бізнесу',
             'description' => 'Індивідуальні рішення підключення для бізнесу будь-якого розміру. Наш корпоративний сервіс включає виділену пропускну здатність, гарантію доступності 99,9%, цілодобову пріоритетну підтримку та розширені функції безпеки для безперебійної роботи вашого бізнесу.',
-            'icon' => '/images/icons/business.svg',
-            'image' => '/images/backgrounds/services-bg.png',
+            'icon' => '/storage/images/icons/business.svg',
+            'image' => '/storage/images/backgrounds/services-bg.webp',
             'order' => 2,
             'active' => true,
         ]);
@@ -79,8 +82,8 @@ class DatabaseSeeder extends Seeder
         Service::create([
             'title' => 'Wi-Fi для розумного дому',
             'description' => 'Усуньте мертві зони з нашою передовою mesh Wi-Fi системою. Підключіть усі пристрої розумного дому з безперебійним покриттям по всьому будинку. Включає просте налаштування, батьківський контроль та можливості гостьової мережі.',
-            'icon' => '/images/icons/wifi.svg',
-            'image' => '/images/backgrounds/tariffs-bg.png',
+            'icon' => '/storage/images/icons/wifi.svg',
+            'image' => '/storage/images/backgrounds/tariffs-bg.webp',
             'order' => 3,
             'active' => true,
         ]);
@@ -88,8 +91,8 @@ class DatabaseSeeder extends Seeder
         Service::create([
             'title' => 'IPTV та стрімінг',
             'description' => 'Отримайте доступ до сотень телеканалів та преміум стрімінгових сервісів з нашим інтегрованим IPTV рішенням. Насолоджуйтесь кришталево чистим HD та 4K контентом на кількох пристроях одночасно без буферизації.',
-            'icon' => '/images/icons/tv.svg',
-            'image' => '/images/backgrounds/coverage-bg.png',
+            'icon' => '/storage/images/icons/tv.svg',
+            'image' => '/storage/images/backgrounds/coverage-bg.webp',
             'order' => 4,
             'active' => true,
         ]);
@@ -231,53 +234,6 @@ class DatabaseSeeder extends Seeder
             'approved' => true,
         ]);
 
-        // Створення зон покриття
-        CoverageArea::create([
-            'name' => 'Центр Києва',
-            'city' => 'Київ',
-            'region' => 'Київська область',
-            'postal_code' => '01001',
-            'latitude' => 50.4501,
-            'longitude' => 30.5234,
-            'radius' => 5.0,
-            'description' => 'Повне покриття в центрі міста з оптоволоконними з\'єднаннями.',
-            'active' => true,
-        ]);
 
-        CoverageArea::create([
-            'name' => 'Оболонський район',
-            'city' => 'Київ',
-            'region' => 'Київська область',
-            'postal_code' => '04205',
-            'latitude' => 50.5101,
-            'longitude' => 30.4973,
-            'radius' => 4.0,
-            'description' => 'Високошвидкісний інтернет доступний по всьому Оболонському району.',
-            'active' => true,
-        ]);
-
-        CoverageArea::create([
-            'name' => 'Центр Львова',
-            'city' => 'Львів',
-            'region' => 'Львівська область',
-            'postal_code' => '79000',
-            'latitude' => 49.8397,
-            'longitude' => 24.0297,
-            'radius' => 3.5,
-            'description' => 'Сервіс доступний у центральному Львові зі швидкістю до 1 Гбіт/с.',
-            'active' => true,
-        ]);
-
-        CoverageArea::create([
-            'name' => 'Приморський район Одеси',
-            'city' => 'Одеса',
-            'region' => 'Одеська область',
-            'postal_code' => '65000',
-            'latitude' => 46.4825,
-            'longitude' => 30.7233,
-            'radius' => 4.2,
-            'description' => 'Покриття по всьому Приморському району з надійними з\'єднаннями.',
-            'active' => true,
-        ]);
     }
 }

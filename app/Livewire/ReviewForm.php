@@ -2,33 +2,34 @@
 
 namespace App\Livewire;
 
+use App\Models\Review;
 use Livewire\Component;
 
 class ReviewForm extends Component
 {
-    public $name = '';
-    public $email = '';
-    public $content = '';
-    public $rating = 5;
-    public $success = false;
+    public string $name = '';
+    public string $email = '';
+    public string $content = '';
+    public int $rating = 5;
+    public bool $success = false;
 
-    protected $rules = [
+    protected array $rules = [
         'name' => 'required|min:2',
         'email' => 'nullable|email',
         'content' => 'required|min:10',
         'rating' => 'required|integer|min:1|max:5',
     ];
 
-    public function submit()
+    public function submit(): void
     {
         $this->validate();
 
-        \App\Models\Review::create([
+        Review::create([
             'name' => $this->name,
             'email' => $this->email,
             'content' => $this->content,
             'rating' => $this->rating,
-            'approved' => false, // Requires admin approval
+            'approved' => false,
         ]);
 
         $this->reset(['name', 'email', 'content', 'rating']);

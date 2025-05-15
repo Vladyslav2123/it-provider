@@ -5,11 +5,23 @@
                 <div class="flex-shrink-0 mr-3">
                     @if($review->avatar)
                         <picture>
-                            <!-- Мобільні пристрої -->
+                            <!-- WebP для мобільних пристроїв -->
+                            <source media="(max-width: 640px)"
+                                    srcset="{{ asset('storage/images/avatars/small/' . pathinfo(basename($review->avatar), PATHINFO_FILENAME) . '.webp') }}"
+                                    type="image/webp">
+                            <!-- WebP для десктопів -->
+                            <source srcset="{{ asset(pathinfo($review->avatar, PATHINFO_DIRNAME) . '/' . pathinfo(basename($review->avatar), PATHINFO_FILENAME) . '.webp') }}"
+                                    type="image/webp">
+
+                            <!-- Звичайні формати -->
                             <source media="(max-width: 640px)" srcset="{{ asset('storage/images/avatars/small/' . basename($review->avatar)) }}">
+
                             <!-- Десктопи -->
-                            <img class="h-10 w-10 rounded-full border border-gray-500" src="{{ $review->avatar }}"
-                                 alt="{{ $review->name }}" loading="lazy">
+                            <img class="h-10 w-10 rounded-full border border-gray-500"
+                                 src="{{ $review->avatar }}"
+                                 alt="{{ $review->name }}"
+                                 loading="lazy"
+                                 decoding="async">
                         </picture>
                     @else
                         <div

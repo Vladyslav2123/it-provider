@@ -1,6 +1,6 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-12">
-        <h2 class="text-3xl font-extrabold cyber-heading sm:text-4xl">Наші послуги</h2>
+        <h2 id="services-heading" class="text-3xl font-extrabold cyber-heading sm:text-4xl">Наші послуги</h2>
         <p class="mt-4 text-lg cyber-text">Ми надаємо широкий спектр інтернет-послуг для задоволення ваших потреб.</p>
     </div>
 
@@ -10,16 +10,31 @@
                 @if($service->image)
                     <div class="adaptive-img-container">
                         <picture>
-                            <!-- Мобільні пристрої -->
+                            <!-- WebP для мобільних пристроїв -->
                             <source media="(max-width: 640px)"
-                                    srcset="{{ asset('images/backgrounds/mobile/' . basename($service->image)) }}">
-                            <!-- Планшети -->
+                                    srcset="{{ asset('storage/images/backgrounds/mobile/' . pathinfo(basename($service->image), PATHINFO_FILENAME) . '.webp') }}"
+                                    type="image/webp">
+                            <!-- WebP для планшетів -->
                             <source media="(max-width: 1024px)"
-                                    srcset="{{ asset('images/backgrounds/tablet/' . basename($service->image)) }}">
+                                    srcset="{{ asset('storage/images/backgrounds/tablet/' . pathinfo(basename($service->image), PATHINFO_FILENAME) . '.webp') }}"
+                                    type="image/webp">
+                            <!-- WebP для десктопів -->
+                            <source
+                                srcset="{{ asset('storage/images/backgrounds/' . pathinfo(basename($service->image), PATHINFO_FILENAME) . '.webp') }}"
+                                type="image/webp">
+
+                            <!-- Звичайні формати для браузерів, які не підтримують WebP -->
+                            <source media="(max-width: 640px)"
+                                    srcset="{{ asset('storage/images/backgrounds/mobile/' . basename($service->image)) }}">
+                            <source media="(max-width: 1024px)"
+                                    srcset="{{ asset('storage/images/backgrounds/tablet/' . basename($service->image)) }}">
+
                             <!-- Десктопи -->
-                            <img src="{{ asset($service->image) }}" alt="{{ $service->title }}"
+                            <img src="{{ asset($service->image) }}"
+                                 alt="{{ $service->title }}"
                                  class="adaptive-img adaptive-img-sm adaptive-img-md adaptive-img-lg"
-                                 loading="lazy">
+                                 loading="lazy"
+                                 decoding="async">
                         </picture>
                     </div>
                 @endif

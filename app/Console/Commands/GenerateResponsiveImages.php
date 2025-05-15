@@ -4,9 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class GenerateResponsiveImages extends Command
 {
@@ -15,7 +14,7 @@ class GenerateResponsiveImages extends Command
      *
      * @var string
      */
-    protected $signature = 'images:responsive {--force : Force regeneration of all images}';
+    protected $signature = 'images:responsive {--force : Force regeneration of all images} {--webp : Convert images to WebP format} {--quality=80 : Quality of the generated images (1-100)}';
 
     /**
      * The console command description.
@@ -31,6 +30,16 @@ class GenerateResponsiveImages extends Command
     {
         $this->info('Generating responsive images...');
 
+        // Отримуємо опції команди
+        $useWebp = $this->option('webp');
+        $quality = (int)$this->option('quality');
+
+        // Перевіряємо якість
+        if ($quality < 1 || $quality > 100) {
+            $quality = 80; // Значення за замовчуванням
+            $this->warn('Quality must be between 1 and 100. Using default value of 80.');
+        }
+
         // Розміри для різних пристроїв
         $sizes = [
             'mobile' => [
@@ -43,11 +52,19 @@ class GenerateResponsiveImages extends Command
             ],
         ];
 
+        // Розмір для маленьких аватарів
+        $avatarSmallSize = [
+            'width' => 100,
+            'height' => 100,
+        ];
+
         // Директорії з зображеннями
         $directories = [
-            'public/images/backgrounds' => 'public/images/backgrounds',
-            'public/images/services' => 'public/images/services',
-            'public/storage/images' => 'storage/app/public/images',
+            'storage/app/public/images/backgrounds' => 'storage/app/public/images/backgrounds',
+            'storage/app/public/images/services' => 'storage/app/public/images/services',
+            'storage/app/public/images/icons' => 'storage/app/public/images/icons',
+            'storage/app/public/images/avatars' => 'storage/app/public/images/avatars',
+            'storage/app/public/images/logo' => 'storage/app/public/images/logo',
         ];
 
         // Створюємо директорії для різних розмірів, якщо вони не існують
@@ -55,15 +72,28 @@ class GenerateResponsiveImages extends Command
             foreach ($directories as $sourceDir => $targetDir) {
                 $this->createDirectoryIfNotExists("{$targetDir}/{$device}");
             }
-
-            // Створюємо директорію для аватарів
-            $this->createDirectoryIfNotExists("storage/app/public/images/avatars/{$device}");
         }
+
+        // Створюємо директорію для маленьких аватарів
+        $this->createDirectoryIfNotExists("storage/app/public/images/avatars/small");
 
         // Обробляємо зображення в кожній директорії
         foreach ($directories as $sourceDir => $targetDir) {
-            $this->processImagesInDirectory($sourceDir, $targetDir, $sizes);
+            $this->processImagesInDirectory($sourceDir, $targetDir, $sizes, $useWebp, $quality);
+
+            // Також створюємо WebP-версії в основній директорії
+            if ($useWebp) {
+                $this->processImagesInMainDirectory($sourceDir, $targetDir, $quality);
+            }
         }
+
+        // Обробляємо аватари для директорії small
+        $this->processAvatarsForSmallDirectory(
+            'storage/app/public/images/avatars',
+            $avatarSmallSize,
+            $useWebp,
+            $quality
+        );
 
         $this->info('Responsive images generated successfully!');
     }
@@ -82,7 +112,7 @@ class GenerateResponsiveImages extends Command
     /**
      * Обробляє всі зображення в директорії
      */
-    private function processImagesInDirectory($sourceDir, $targetDir, $sizes)
+    private function processImagesInDirectory($sourceDir, $targetDir, $sizes, $useWebp = false, $quality = 80)
     {
         if (!File::exists($sourceDir)) {
             $this->warn("Source directory does not exist: {$sourceDir}");
@@ -99,16 +129,33 @@ class GenerateResponsiveImages extends Command
         foreach ($files as $file) {
             $filename = $file->getFilename();
             $extension = $file->getExtension();
+            $basename = pathinfo($filename, PATHINFO_FILENAME);
 
             // Пропускаємо файли, які не є зображеннями
-            if (!in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'])) {
+            if (!in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+                $bar->advance();
+                continue;
+            }
+
+            // Пропускаємо SVG файли, оскільки вони вже оптимізовані
+            if (strtolower($extension) === 'svg') {
+                // Просто копіюємо SVG файли без змін
+                foreach ($sizes as $device => $dimensions) {
+                    $targetPath = "{$targetDir}/{$device}/{$filename}";
+                    if (!File::exists($targetPath) || $force) {
+                        File::copy($file->getPathname(), $targetPath);
+                    }
+                }
                 $bar->advance();
                 continue;
             }
 
             // Обробляємо зображення для кожного розміру
             foreach ($sizes as $device => $dimensions) {
-                $targetPath = "{$targetDir}/{$device}/{$filename}";
+                // Визначаємо цільовий формат і шлях
+                $targetExtension = $useWebp ? 'webp' : $extension;
+                $targetFilename = $useWebp ? "{$basename}.webp" : $filename;
+                $targetPath = "{$targetDir}/{$device}/{$targetFilename}";
 
                 // Якщо файл вже існує і не вказано --force, пропускаємо
                 if (File::exists($targetPath) && !$force) {
@@ -125,11 +172,159 @@ class GenerateResponsiveImages extends Command
                     // Змінюємо розмір
                     $img = $img->resize($dimensions['width'], $dimensions['height']);
 
-                    // Зберігаємо зображення
-                    $img->save($targetPath);
+                    // Зберігаємо зображення з вказаною якістю
+                    $img->save($targetPath, $quality);
+
+                    $this->line("\nGenerated: {$targetPath}");
                 } catch (\Exception $e) {
                     $this->error("Error processing {$file->getPathname()}: {$e->getMessage()}");
                 }
+            }
+
+            $bar->advance();
+        }
+
+        $bar->finish();
+        $this->line('');
+    }
+
+    /**
+     * Обробляє зображення в основній директорії
+     */
+    private function processImagesInMainDirectory($sourceDir, $targetDir, $quality = 80)
+    {
+        if (!File::exists($sourceDir)) {
+            $this->warn("Source directory does not exist: {$sourceDir}");
+            return;
+        }
+
+        $files = File::files($sourceDir);
+        $force = $this->option('force');
+
+        $this->info("Processing main directory {$sourceDir}...");
+        $bar = $this->output->createProgressBar(count($files));
+        $bar->start();
+
+        foreach ($files as $file) {
+            $filename = $file->getFilename();
+            $extension = $file->getExtension();
+            $basename = pathinfo($filename, PATHINFO_FILENAME);
+
+            // Пропускаємо файли, які не є зображеннями
+            if (!in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif'])) {
+                $bar->advance();
+                continue;
+            }
+
+            // Пропускаємо SVG файли
+            if (strtolower($extension) === 'svg') {
+                $bar->advance();
+                continue;
+            }
+
+            // Визначаємо цільовий шлях
+            $targetFilename = "{$basename}.webp";
+            $targetPath = "{$targetDir}/{$targetFilename}";
+
+            // Якщо файл вже існує і не вказано --force, пропускаємо
+            if (File::exists($targetPath) && !$force) {
+                $bar->advance();
+                continue;
+            }
+
+            try {
+                // Створюємо екземпляр ImageManager з драйвером GD
+                $manager = new ImageManager(new Driver());
+
+                // Завантажуємо зображення
+                $img = $manager->read($file->getPathname());
+
+                // Зберігаємо зображення з вказаною якістю
+                $img->save($targetPath, $quality);
+
+                $this->line("\nGenerated: {$targetPath}");
+            } catch (\Exception $e) {
+                $this->error("Error processing {$file->getPathname()}: {$e->getMessage()}");
+            }
+
+            $bar->advance();
+        }
+
+        $bar->finish();
+        $this->line('');
+    }
+
+    /**
+     * Обробляє аватари для директорії small
+     */
+    private function processAvatarsForSmallDirectory($sourceDir, $dimensions, $useWebp = false, $quality = 80)
+    {
+        if (!File::exists($sourceDir)) {
+            $this->warn("Source directory does not exist: {$sourceDir}");
+            return;
+        }
+
+        // Створюємо директорію small, якщо вона не існує
+        $targetDir = "{$sourceDir}/small";
+        $this->createDirectoryIfNotExists($targetDir);
+
+        $files = File::files($sourceDir);
+        $force = $this->option('force');
+
+        $this->info("Processing avatars for small directory...");
+        $bar = $this->output->createProgressBar(count($files));
+        $bar->start();
+
+        foreach ($files as $file) {
+            $filename = $file->getFilename();
+            $extension = $file->getExtension();
+            $basename = pathinfo($filename, PATHINFO_FILENAME);
+
+            // Пропускаємо файли, які не є зображеннями
+            if (!in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
+                $bar->advance();
+                continue;
+            }
+
+            // Пропускаємо SVG файли
+            if (strtolower($extension) === 'svg') {
+                $bar->advance();
+                continue;
+            }
+
+            // Пропускаємо директорії
+            if (is_dir($file)) {
+                $bar->advance();
+                continue;
+            }
+
+            // Визначаємо цільовий формат і шлях
+            $targetExtension = $useWebp ? 'webp' : $extension;
+            $targetFilename = $useWebp ? "{$basename}.webp" : $filename;
+            $targetPath = "{$targetDir}/{$targetFilename}";
+
+            // Якщо файл вже існує і не вказано --force, пропускаємо
+            if (File::exists($targetPath) && !$force) {
+                $bar->advance();
+                continue;
+            }
+
+            try {
+                // Створюємо екземпляр ImageManager з драйвером GD
+                $manager = new ImageManager(new Driver());
+
+                // Завантажуємо зображення
+                $img = $manager->read($file->getPathname());
+
+                // Змінюємо розмір і обрізаємо до квадрата
+                $img = $img->cover($dimensions['width'], $dimensions['height']);
+
+                // Зберігаємо зображення з вказаною якістю
+                $img->save($targetPath, $quality);
+
+                $this->line("\nGenerated: {$targetPath}");
+            } catch (\Exception $e) {
+                $this->error("Error processing {$file->getPathname()}: {$e->getMessage()}");
             }
 
             $bar->advance();

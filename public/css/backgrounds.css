@@ -7,56 +7,56 @@
 /* Мобільні пристрої */
 @media (max-width: 640px) {
     .services-bg {
-        background-image: url('../images/backgrounds/mobile/services-bg.png');
+        background-image: url('../storage/images/backgrounds/mobile/services-bg.webp');
     }
 
     .tariffs-bg {
-        background-image: url('../images/backgrounds/mobile/tariffs-bg.png');
+        background-image: url('../storage/images/backgrounds/mobile/tariffs-bg.webp');
     }
 
     .coverage-bg {
-        background-image: url('../images/backgrounds/mobile/reviews-bg.png');
+        background-image: url('../storage/images/backgrounds/mobile/reviews-bg.webp');
     }
 
     .reviews-bg {
-        background-image: url('../images/backgrounds/mobile/coverage-bg.png');
+        background-image: url('../storage/images/backgrounds/mobile/coverage-bg.webp');
     }
 }
 
 /* Планшети */
 @media (min-width: 641px) and (max-width: 1024px) {
     .services-bg {
-        background-image: url('../images/backgrounds/tablet/services-bg.png');
+        background-image: url('../storage/images/backgrounds/tablet/services-bg.webp');
     }
 
     .tariffs-bg {
-        background-image: url('../images/backgrounds/tablet/tariffs-bg.png');
+        background-image: url('../storage/images/backgrounds/tablet/tariffs-bg.webp');
     }
 
     .coverage-bg {
-        background-image: url('../images/backgrounds/tablet/reviews-bg.png');
+        background-image: url('../storage/images/backgrounds/tablet/reviews-bg.webp');
     }
 
     .reviews-bg {
-        background-image: url('../images/backgrounds/tablet/coverage-bg.png');
+        background-image: url('../storage/images/backgrounds/tablet/coverage-bg.webp');
     }
 }
 
 /* Десктопи */
 @media (min-width: 1025px) {
     .services-bg {
-        background-image: url('../images/backgrounds/services-bg.png');
+        background-image: url('../storage/images/backgrounds/services-bg.webp');
     }
 
     .tariffs-bg {
-        background-image: url('../images/backgrounds/tariffs-bg.png');
+        background-image: url('../storage/images/backgrounds/tariffs-bg.webp');
     }
 
     .coverage-bg {
-        background-image: url('../images/backgrounds/reviews-bg.png');
+        background-image: url('../storage/images/backgrounds/reviews-bg.webp');
     }
 
     .reviews-bg {
-        background-image: url('../images/backgrounds/coverage-bg.png');
+        background-image: url('../storage/images/backgrounds/coverage-bg.webp');
     }
 }

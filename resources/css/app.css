@@ -19,6 +19,24 @@
     --cyber-dark-gray: #2F2F2F;
     --cyber-purple: #800080;
     --cyber-pink: #FF00FF;
+
+    /* Кольори для темної теми адмін-панелі (Filament-style) */
+    --admin-dark-bg: #111827;
+    --admin-dark-card: #1F2937;
+    --admin-dark-card-hover: #2D3748;
+    --admin-dark-border: #374151;
+    --admin-dark-text: #F3F4F6;
+    --admin-dark-text-secondary: #9CA3AF;
+    --admin-dark-primary: #3B82F6;
+    --admin-dark-primary-hover: #2563EB;
+    --admin-dark-success: #10B981;
+    --admin-dark-danger: #EF4444;
+    --admin-dark-warning: #F59E0B;
+    --admin-dark-info: #6366F1;
+    --admin-dark-header: #1E293B;
+    --admin-dark-sidebar: #0F172A;
+    --admin-dark-input: #334257;
+    --admin-dark-input-focus: #374151;
 }
 
 /* Додаткові стилі */
@@ -140,6 +158,7 @@
     background-color: rgba(30, 42, 68, 0.8);
     border: 1px solid var(--cyber-neon-gray);
     color: var(--cyber-light-gray);
+    padding: 0.5rem 0.75rem;
 }
 
 .cyber-input:focus {
@@ -195,6 +214,204 @@
         background-color: rgba(47, 47, 47, 0.8);
         backdrop-filter: blur(8px);
     }
+}
+
+/* Темна тема для адмін-панелі */
+.admin-dark {
+    background-color: var(--admin-dark-bg);
+    color: var(--admin-dark-text);
+}
+
+.admin-dark-header {
+    background-color: var(--admin-dark-header);
+    border-bottom: 1px solid var(--admin-dark-border);
+}
+
+.admin-dark-nav {
+    background-color: var(--admin-dark-sidebar);
+    border-bottom: 1px solid var(--admin-dark-border);
+}
+
+.admin-dark-nav a {
+    color: var(--admin-dark-text);
+}
+
+.admin-dark-nav a:hover {
+    color: var(--admin-dark-primary);
+}
+
+.admin-dark-nav a.active {
+    border-color: var(--admin-dark-primary) !important;
+    color: var(--admin-dark-primary);
+}
+
+.admin-dark-card {
+    background-color: var(--admin-dark-card);
+    border-color: var(--admin-dark-border);
+}
+
+/*.admin-dark-card:hover {*/
+/*    background-color: var(--admin-dark-card-hover);*/
+/*}*/
+
+.admin-dark-table {
+    --tw-bg-opacity: 1;
+    background-color: var(--admin-dark-card);
+    color: var(--admin-dark-text);
+}
+
+.admin-dark-table thead {
+    background-color: var(--admin-dark-header);
+}
+
+.admin-dark-table th {
+    color: var(--admin-dark-text-secondary);
+}
+
+.admin-dark-table tbody tr {
+    border-top-color: var(--admin-dark-border);
+}
+
+.admin-dark-table tbody tr:hover {
+    background-color: var(--admin-dark-card-hover);
+}
+
+.admin-dark-input {
+    background-color: var(--admin-dark-input);
+    border-color: var(--admin-dark-border);
+    color: var(--admin-dark-text);
+    padding: 0.5rem 0.75rem;
+}
+
+.admin-dark-input:focus {
+    border-color: var(--admin-dark-primary);
+    background-color: var(--admin-dark-input-focus);
+}
+
+/* Додаткові стилі для текстових областей та селектів */
+textarea.admin-dark-input,
+select.admin-dark-input {
+    padding: 0.5rem 0.75rem;
+}
+
+/* Стилі для полів типу file */
+input[type="file"].admin-dark-input {
+    padding: 0.375rem 0.75rem;
+}
+
+/* Стилі для кнопки вибору файлу */
+input[type="file"].admin-dark-input::file-selector-button {
+    padding: 0.375rem 0.75rem;
+    margin-right: 0.75rem;
+    border: none;
+    background-color: var(--admin-dark-card-hover);
+    color: var(--admin-dark-text);
+    transition: background-color 0.3s;
+}
+
+input[type="file"].admin-dark-input::file-selector-button:hover {
+    background-color: var(--admin-dark-primary);
+}
+
+/* Стилі для полів типу checkbox та radio */
+input[type="checkbox"].admin-dark-input,
+input[type="radio"].admin-dark-input {
+    padding: 0;
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+    appearance: none;
+    border: 1px solid var(--admin-dark-border);
+    background-color: var(--admin-dark-input);
+    position: relative;
+}
+
+input[type="checkbox"].admin-dark-input:checked,
+input[type="radio"].admin-dark-input:checked {
+    background-color: var(--admin-dark-primary);
+    border-color: var(--admin-dark-primary);
+}
+
+input[type="checkbox"].admin-dark-input:checked::after {
+    content: '\2713';
+    position: absolute;
+    top: -0.125rem;
+    left: 0.125rem;
+    color: white;
+    font-size: 0.875rem;
+}
+
+input[type="radio"].admin-dark-input {
+    border-radius: 50%;
+}
+
+input[type="radio"].admin-dark-input:checked::after {
+    content: '';
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.admin-dark-button {
+    background-color: var(--admin-dark-card);
+    color: var(--admin-dark-text);
+    border: 1px solid var(--admin-dark-border);
+}
+
+.admin-dark-button:hover {
+    background-color: var(--admin-dark-card-hover);
+}
+
+.admin-dark-button-primary {
+    background-color: var(--admin-dark-primary);
+    color: white;
+}
+
+.admin-dark-button-primary:hover {
+    background-color: var(--admin-dark-primary-hover);
+}
+
+.admin-dark-button-success {
+    background-color: var(--admin-dark-success);
+    color: white;
+}
+
+.admin-dark-button-danger {
+    background-color: var(--admin-dark-danger);
+    color: white;
+}
+
+.admin-dark-badge-success {
+    background-color: rgba(16, 185, 129, 0.2);
+    color: var(--admin-dark-success);
+}
+
+.admin-dark-badge-danger {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: var(--admin-dark-danger);
+}
+
+.admin-dark-badge-warning {
+    background-color: rgba(245, 158, 11, 0.2);
+    color: var(--admin-dark-warning);
+}
+
+.admin-dark-badge-info {
+    background-color: rgba(99, 102, 241, 0.2);
+    color: var(--admin-dark-info);
+}
+
+.admin-dark-link {
+    color: var(--admin-dark-primary);
+}
+
+.admin-dark-link:hover {
+    color: var(--admin-dark-primary-hover);
 }
 
 /* Фонові зображення винесені в окремий файл public/css/backgrounds.css */
